@@ -1,0 +1,51 @@
+# Backend
+/backend/target/
+/backend/.mvn/
+/backend/mvnw
+/backend/mvnw.cmd
+/backend/.settings/
+/backend/.classpath
+/backend/.project
+/backend/.factorypath
+/backend/.springBeans
+/backend/.sts4-cache
+/backend/HELP.md
+/backend/.idea/
+/backend/*.iws
+/backend/*.iml
+/backend/*.ipr
+
+# Frontend
+/frontend/node_modules/
+/frontend/.pnp
+/frontend/.pnp.js
+/frontend/coverage/
+/frontend/build/
+/frontend/.DS_Store
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+/frontend/.idea/
+/frontend/.vscode/
+
+# Database
+/database/*.log
+/database/*.lck
+/database/*.tmp
+
+# General
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.idea/
+.vscode/
+*.log
+*.swp
+*.swo 
