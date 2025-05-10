@@ -135,6 +135,7 @@ const VehicleForm = ({ vehicle, isEditing }) => {
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           >
             <option value="Gasoline">Gasoline</option>
+            <option value="Petrol">Petrol</option>
             <option value="Diesel">Diesel</option>
             <option value="Electric">Electric</option>
             <option value="Hybrid">Hybrid</option>

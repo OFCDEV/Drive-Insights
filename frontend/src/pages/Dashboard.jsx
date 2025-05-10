@@ -15,6 +15,7 @@ import {
   Legend,
 } from 'chart.js';
 import axios from 'axios';
+import { useTheme } from '../context/ThemeContext';
 
 // Register ChartJS components
 ChartJS.register(
@@ -38,6 +39,8 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showMockData, setShowMockData] = useState(true);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   // Fetch API data whenever the component mounts
   useEffect(() => {
@@ -99,7 +102,54 @@ const Dashboard = () => {
     ? [...apiVehicles, ...mockVehicles]
     : apiVehicles;
 
-  // Chart data for fuel efficiency
+  // Chart options with dark mode support
+  const chartOptions = {
+    maintainAspectRatio: false,
+    animation: {
+      duration: 1000,
+      easing: 'easeOutQuart'
+    },
+    hover: {
+      mode: 'nearest',
+      intersect: true,
+      animationDuration: 200
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: isDark ? '#e5e7eb' : undefined,
+        },
+        grid: {
+          color: isDark ? 'rgba(255, 255, 255, 0.1)' : undefined,
+        }
+      },
+      y: {
+        beginAtZero: false,
+        ticks: {
+          color: isDark ? '#e5e7eb' : undefined,
+        },
+        grid: {
+          color: isDark ? 'rgba(255, 255, 255, 0.1)' : undefined,
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: isDark ? '#e5e7eb' : undefined,
+        }
+      },
+      tooltip: {
+        backgroundColor: isDark ? 'rgba(30, 41, 59, 0.8)' : undefined,
+        titleColor: isDark ? '#e5e7eb' : undefined,
+        bodyColor: isDark ? '#e5e7eb' : undefined,
+        borderColor: isDark ? 'rgba(148, 163, 184, 0.2)' : undefined,
+        borderWidth: isDark ? 1 : undefined,
+      }
+    }
+  };
+
+  // Chart data for fuel efficiency with dark mode support
   const fuelChartData = {
     labels: fuelData.map(data => data.month),
     datasets: [
@@ -159,7 +209,7 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-primary mb-2">Dashboard</h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-300">
             Welcome to Drive Insights. View your vehicle performance at a glance.
           </p>
         </div>
@@ -172,59 +222,59 @@ const Dashboard = () => {
               onChange={() => setShowMockData(!showMockData)}
             />
             <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-            <span className="ms-3 text-sm font-medium text-gray-700">Show Demo Data</span>
+            <span className="ms-3 text-sm font-medium text-gray-700 dark:text-gray-300">Show Demo Data</span>
           </label>
         </div>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="card bg-white flex items-center space-x-4">
-          <div className="bg-primary-100 p-3 rounded-full">
-            <Car size={24} className="text-primary" />
+        <div className="card bg-white dark:bg-gray-800 flex items-center space-x-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary">
+          <div className="bg-primary-100 dark:bg-primary-900 p-3 rounded-full transition-all duration-300 hover:bg-primary-200 dark:hover:bg-primary-800">
+            <Car size={24} className="text-primary dark:text-primary-300" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Total Vehicles</p>
-            <h3 className="text-2xl font-bold">{allVehicles.length}</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Total Vehicles</p>
+            <h3 className="text-2xl font-bold dark:text-white">{allVehicles.length}</h3>
             {showMockData && apiVehicles.length > 0 && (
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
                 {apiVehicles.length} real, {mockVehicles.length} demo
               </p>
             )}
           </div>
         </div>
 
-        <div className="card bg-white flex items-center space-x-4">
-          <div className="bg-primary-100 p-3 rounded-full">
-            <Fuel size={24} className="text-primary" />
+        <div className="card bg-white dark:bg-gray-800 flex items-center space-x-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary">
+          <div className="bg-primary-100 dark:bg-primary-900 p-3 rounded-full transition-all duration-300 hover:bg-primary-200 dark:hover:bg-primary-800">
+            <Fuel size={24} className="text-primary dark:text-primary-300" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Avg. MPG</p>
-            <h3 className="text-2xl font-bold">
+            <p className="text-sm text-gray-500 dark:text-gray-400">Avg. MPG</p>
+            <h3 className="text-2xl font-bold dark:text-white">
               {(fuelData.reduce((sum, data) => sum + data.mpg, 0) / fuelData.length).toFixed(1)}
             </h3>
           </div>
         </div>
 
-        <div className="card bg-white flex items-center space-x-4">
-          <div className="bg-primary-100 p-3 rounded-full">
-            <Gauge size={24} className="text-primary" />
+        <div className="card bg-white dark:bg-gray-800 flex items-center space-x-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary">
+          <div className="bg-primary-100 dark:bg-primary-900 p-3 rounded-full transition-all duration-300 hover:bg-primary-200 dark:hover:bg-primary-800">
+            <Gauge size={24} className="text-primary dark:text-primary-300" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Total Idling Time</p>
-            <h3 className="text-2xl font-bold">
+            <p className="text-sm text-gray-500 dark:text-gray-400">Total Idling Time</p>
+            <h3 className="text-2xl font-bold dark:text-white">
               {engineData.reduce((sum, data) => sum + data.idlingTime, 0)} sec
             </h3>
           </div>
         </div>
 
-        <div className="card bg-white flex items-center space-x-4">
-          <div className="bg-primary-100 p-3 rounded-full">
-            <Wind size={24} className="text-primary" />
+        <div className="card bg-white dark:bg-gray-800 flex items-center space-x-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary">
+          <div className="bg-primary-100 dark:bg-primary-900 p-3 rounded-full transition-all duration-300 hover:bg-primary-200 dark:hover:bg-primary-800">
+            <Wind size={24} className="text-primary dark:text-primary-300" />
           </div>
           <div>
-            <p className="text-sm text-gray-500">Total CO2 Emissions</p>
-            <h3 className="text-2xl font-bold">
+            <p className="text-sm text-gray-500 dark:text-gray-400">Total CO2 Emissions</p>
+            <h3 className="text-2xl font-bold dark:text-white">
               {emissionData.reduce((sum, data) => sum + data.co2, 0).toFixed(1)} g/km
             </h3>
           </div>
@@ -233,82 +283,152 @@ const Dashboard = () => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card">
+        <div className="card transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary">
           <h3 className="text-xl font-semibold mb-4">Fuel Efficiency Over Time</h3>
           <div className="h-64">
-            <Line data={fuelChartData} options={{ maintainAspectRatio: false }} />
+            <Line data={fuelChartData} options={chartOptions} />
           </div>
         </div>
 
-        <div className="card">
+        <div className="card transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary">
           <h3 className="text-xl font-semibold mb-4">Engine Idling Time by Vehicle</h3>
           <div className="h-64">
-            <Bar data={engineChartData} options={{ maintainAspectRatio: false }} />
+            <Bar data={engineChartData} options={chartOptions} />
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card">
+        <div className="card transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary">
           <h3 className="text-xl font-semibold mb-4">CO2 Emissions by Vehicle</h3>
-          <div className="h-64 flex justify-center">
-            <Doughnut data={emissionChartData} options={{ maintainAspectRatio: false }} />
+          <div className="h-64">
+            <Doughnut data={emissionChartData} options={{
+              maintainAspectRatio: false,
+              animation: {
+                duration: 1000,
+                animateRotate: true,
+                animateScale: true
+              },
+              hover: {
+                animationDuration: 200
+              },
+              plugins: {
+                legend: {
+                  labels: {
+                    color: isDark ? '#e5e7eb' : undefined,
+                  }
+                },
+                tooltip: {
+                  backgroundColor: isDark ? 'rgba(30, 41, 59, 0.8)' : undefined,
+                  titleColor: isDark ? '#e5e7eb' : undefined,
+                  bodyColor: isDark ? '#e5e7eb' : undefined,
+                  borderColor: isDark ? 'rgba(148, 163, 184, 0.2)' : undefined,
+                  borderWidth: isDark ? 1 : undefined,
+                }
+              }
+            }} />
           </div>
         </div>
 
-        <div className="card">
-          <h3 className="text-xl font-semibold mb-4">
-            Recent Vehicles
-            {apiVehicles.length > 0 && showMockData && (
-              <span className="ml-2 px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">
-                {apiVehicles.length} real vehicle{apiVehicles.length !== 1 ? 's' : ''}
-              </span>
-            )}
-          </h3>
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
-              <thead className="bg-secondary">
-                <tr>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Make</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Model</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Year</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">License</th>
-                  {showMockData && <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Type</th>}
+        <div className="card transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary">
+          <h3 className="text-xl font-semibold mb-4">Performance Indicators</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-3 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-600 hover:shadow">
+              <div className="text-green-600 dark:text-green-400">
+                <TrendingUp size={24} />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-300">Fuel Economy</p>
+                <p className="font-bold dark:text-white">Up 2.3% from last month</p>
+              </div>
+            </div>
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center space-x-3 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-600 hover:shadow">
+              <div className="text-red-600 dark:text-red-400">
+                <TrendingDown size={24} />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-300">Idling Time</p>
+                <p className="font-bold dark:text-white">Down 1.8% from last month</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Vehicles Section */}
+      <div className="card transition-all duration-300 hover:shadow-lg">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+          <h3 className="text-xl font-semibold">Your Vehicles</h3>
+          <Link to="/vehicles" className="btn btn-primary btn-sm mt-2 md:mt-0 transition-all duration-300 hover:bg-primary-dark hover:shadow-md">
+            View All Vehicles
+          </Link>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full">
+            <thead className="bg-secondary dark:bg-gray-700">
+              <tr>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">Make</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">Model</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">Year</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200">License Plate</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-200"></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-secondary dark:divide-gray-600">
+              {allVehicles.slice(0, 5).map((vehicle) => (
+                <tr key={vehicle.id} className="hover:bg-secondary-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                  <td className="px-4 py-3 text-sm dark:text-gray-300">{vehicle.make}</td>
+                  <td className="px-4 py-3 text-sm dark:text-gray-300">{vehicle.model}</td>
+                  <td className="px-4 py-3 text-sm dark:text-gray-300">{vehicle.year}</td>
+                  <td className="px-4 py-3 text-sm dark:text-gray-300">{vehicle.licensePlate}</td>
+                  <td className="px-4 py-3 text-sm text-right">
+                    <Link 
+                      to={`/vehicles/${vehicle.id}`} 
+                      className="text-primary hover:text-primary-dark dark:text-primary-300 dark:hover:text-primary-200 transition-colors duration-200 hover:underline"
+                    >
+                      View Details
+                    </Link>
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-secondary">
-                {allVehicles.slice(0, 5).map((vehicle) => (
-                  <tr key={vehicle.id} className={String(vehicle.id).startsWith('m') ? 'bg-blue-50' : ''}>
-                    <td className="px-4 py-2 text-sm">{vehicle.make}</td>
-                    <td className="px-4 py-2 text-sm">{vehicle.model}</td>
-                    <td className="px-4 py-2 text-sm">{vehicle.year}</td>
-                    <td className="px-4 py-2 text-sm">{vehicle.licensePlate}</td>
-                    {showMockData && (
-                      <td className="px-4 py-2 text-sm">
-                        {String(vehicle.id).startsWith('m') ? (
-                          <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">Demo</span>
-                        ) : (
-                          <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Real</span>
-                        )}
-                      </td>
-                    )}
-                  </tr>
-                ))}
-                {allVehicles.length === 0 && (
-                  <tr>
-                    <td colSpan={showMockData ? 5 : 4} className="px-4 py-6 text-center text-gray-500">
-                      No vehicles found. Add a vehicle to get started!
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className="mt-4">
-            <Link to="/vehicles" className="text-accent hover:text-accent-700 text-sm font-semibold">
-              View all vehicles →
-            </Link>
-          </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Quick Links Section */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="card transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary">
+          <h3 className="text-xl font-semibold mb-4">Fuel Consumption</h3>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">Track and monitor your vehicles' fuel efficiency and consumption patterns.</p>
+          <Link 
+            to="/fuel-consumption" 
+            className="btn btn-primary w-full transition-all duration-300 hover:bg-primary-dark hover:shadow-md"
+          >
+            View Fuel Data
+          </Link>
+        </div>
+
+        <div className="card transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary">
+          <h3 className="text-xl font-semibold mb-4">Engine Monitoring</h3>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">Monitor engine performance, temperature, RPM, and idling time.</p>
+          <Link 
+            to="/engine-monitoring" 
+            className="btn btn-primary w-full transition-all duration-300 hover:bg-primary-dark hover:shadow-md"
+          >
+            View Engine Data
+          </Link>
+        </div>
+
+        <div className="card transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:border-primary">
+          <h3 className="text-xl font-semibold mb-4">Emissions Data</h3>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">Track emissions data and monitor your vehicles' environmental impact.</p>
+          <Link 
+            to="/emissions" 
+            className="btn btn-primary w-full transition-all duration-300 hover:bg-primary-dark hover:shadow-md"
+          >
+            View Emissions Data
+          </Link>
         </div>
       </div>
     </div>

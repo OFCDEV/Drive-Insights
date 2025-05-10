@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ChevronLeft, Edit, Trash2, Car, Fuel, Gauge, Wind } from 'lucide-react';
 import { Line, Bar } from 'react-chartjs-2';
 import axios from 'axios';
+import { useTheme } from '../context/ThemeContext';
 
 const VehicleDetail = () => {
   const { id } = useParams();
@@ -13,6 +14,8 @@ const VehicleDetail = () => {
   const [emissionData, setEmissionData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   useEffect(() => {
     const fetchVehicleData = async () => {
@@ -70,6 +73,44 @@ const VehicleDetail = () => {
       } catch (err) {
         console.error(`Error deleting vehicle ${id}:`, err);
         alert('Failed to delete vehicle. Please try again.');
+      }
+    }
+  };
+
+  // Chart options with dark mode support
+  const chartOptions = {
+    responsive: true,
+    plugins: { 
+      legend: { 
+        position: 'top',
+        labels: {
+          color: isDark ? '#e5e7eb' : undefined,
+        }
+      },
+      tooltip: {
+        backgroundColor: isDark ? 'rgba(30, 41, 59, 0.8)' : undefined,
+        titleColor: isDark ? '#e5e7eb' : undefined,
+        bodyColor: isDark ? '#e5e7eb' : undefined,
+        borderColor: isDark ? 'rgba(148, 163, 184, 0.2)' : undefined,
+        borderWidth: isDark ? 1 : undefined,
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: isDark ? '#e5e7eb' : undefined,
+        },
+        grid: {
+          color: isDark ? 'rgba(255, 255, 255, 0.1)' : undefined,
+        }
+      },
+      y: {
+        ticks: {
+          color: isDark ? '#e5e7eb' : undefined,
+        },
+        grid: {
+          color: isDark ? 'rgba(255, 255, 255, 0.1)' : undefined,
+        }
       }
     }
   };
@@ -141,7 +182,7 @@ const VehicleDetail = () => {
             <ChevronLeft size={18} />
             <span>Back to Vehicles</span>
           </Link>
-          <h1 className="text-3xl font-bold text-primary">
+          <h1 className="text-3xl font-bold text-primary dark:text-primary-300">
             {vehicle.make} {vehicle.model}
           </h1>
         </div>
@@ -154,7 +195,7 @@ const VehicleDetail = () => {
             <span>Edit</span>
           </Link>
           <button 
-            className="btn bg-red-600 text-white hover:bg-red-700 inline-flex items-center space-x-2"
+            className="btn bg-red-600 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600 inline-flex items-center space-x-2"
             onClick={handleDelete}
           >
             <Trash2 size={18} />
@@ -167,50 +208,50 @@ const VehicleDetail = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="card">
           <div className="flex items-center space-x-4 mb-6">
-            <div className="bg-primary-100 p-4 rounded-full">
-              <Car size={32} className="text-primary" />
+            <div className="bg-primary-100 dark:bg-primary-900 p-4 rounded-full">
+              <Car size={32} className="text-primary dark:text-primary-300" />
             </div>
-            <h2 className="text-2xl font-semibold">Vehicle Details</h2>
+            <h2 className="text-2xl font-semibold dark:text-white">Vehicle Details</h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-500">Make</p>
-              <p className="font-semibold">{vehicle.make}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Make</p>
+              <p className="font-semibold dark:text-white">{vehicle.make}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Model</p>
-              <p className="font-semibold">{vehicle.model}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Model</p>
+              <p className="font-semibold dark:text-white">{vehicle.model}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Year</p>
-              <p className="font-semibold">{vehicle.year}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Year</p>
+              <p className="font-semibold dark:text-white">{vehicle.year}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">License Plate</p>
-              <p className="font-semibold">{vehicle.licensePlate}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">License Plate</p>
+              <p className="font-semibold dark:text-white">{vehicle.licensePlate}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Fuel Type</p>
-              <p className="font-semibold">{vehicle.fuelType}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Fuel Type</p>
+              <p className="font-semibold dark:text-white">{vehicle.fuelType}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Engine Size</p>
-              <p className="font-semibold">{vehicle.engineSize || 'N/A'} L</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Engine Size</p>
+              <p className="font-semibold dark:text-white">{vehicle.engineSize || 'N/A'} L</p>
             </div>
           </div>
         </div>
 
         <div className="card">
           <div className="flex items-center space-x-4 mb-6">
-            <div className="bg-primary-100 p-4 rounded-full">
-              <Fuel size={32} className="text-primary" />
+            <div className="bg-primary-100 dark:bg-primary-900 p-4 rounded-full">
+              <Fuel size={32} className="text-primary dark:text-primary-300" />
             </div>
-            <h2 className="text-2xl font-semibold">Fuel Consumption</h2>
+            <h2 className="text-2xl font-semibold dark:text-white">Fuel Consumption</h2>
           </div>
           
           <div>
-            <Line data={fuelChartData} options={{ responsive: true, plugins: { legend: { position: 'top' } } }} />
+            <Line data={fuelChartData} options={chartOptions} />
           </div>
         </div>
       </div>
@@ -218,27 +259,27 @@ const VehicleDetail = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="card">
           <div className="flex items-center space-x-4 mb-6">
-            <div className="bg-primary-100 p-4 rounded-full">
-              <Gauge size={32} className="text-primary" />
+            <div className="bg-primary-100 dark:bg-primary-900 p-4 rounded-full">
+              <Gauge size={32} className="text-primary dark:text-primary-300" />
             </div>
-            <h2 className="text-2xl font-semibold">Engine Performance</h2>
+            <h2 className="text-2xl font-semibold dark:text-white">Engine Performance</h2>
           </div>
           
           <div>
-            <Line data={engineTempChartData} options={{ responsive: true, plugins: { legend: { position: 'top' } } }} />
+            <Line data={engineTempChartData} options={chartOptions} />
           </div>
         </div>
 
         <div className="card">
           <div className="flex items-center space-x-4 mb-6">
-            <div className="bg-primary-100 p-4 rounded-full">
-              <Wind size={32} className="text-primary" />
+            <div className="bg-primary-100 dark:bg-primary-900 p-4 rounded-full">
+              <Wind size={32} className="text-primary dark:text-primary-300" />
             </div>
-            <h2 className="text-2xl font-semibold">Emissions Data</h2>
+            <h2 className="text-2xl font-semibold dark:text-white">Emissions Data</h2>
           </div>
           
           <div>
-            <Bar data={emissionsChartData} options={{ responsive: true, plugins: { legend: { position: 'top' } } }} />
+            <Bar data={emissionsChartData} options={chartOptions} />
           </div>
         </div>
       </div>

@@ -11,7 +11,7 @@ const AddVehicle = () => {
           <ChevronLeft size={18} />
           <span>Back to Vehicles</span>
         </Link>
-        <h1 className="text-3xl font-bold text-primary">Add New Vehicle</h1>
+        <h1 className="text-3xl font-bold text-primary dark:text-primary-300">Add New Vehicle</h1>
       </div>
       
       <div className="card">

@@ -29,6 +29,15 @@ A web application that provides interactive dashboards for visualizing vehicle d
 - Node.js 18+
 - PostgreSQL 14+
 
+### Environment Setup
+1. In the `backend` directory, copy `.env.template` to `.env`
+2. Update the `.env` file with your PostgreSQL credentials:
+   ```
+   DB_URL=jdbc:postgresql://localhost:5432/drive_insights
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   ```
+
 ### Backend Setup
 1. Navigate to the `backend` directory
 2. Run `./mvnw clean install` to build the project

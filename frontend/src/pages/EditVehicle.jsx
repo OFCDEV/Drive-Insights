@@ -30,7 +30,7 @@ const EditVehicle = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="text-xl text-primary">Loading vehicle data...</div>
+        <div className="text-xl text-primary dark:text-primary-300">Loading vehicle data...</div>
       </div>
     );
   }
@@ -38,7 +38,7 @@ const EditVehicle = () => {
   if (error || !vehicle) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="text-xl text-red-600">{error || 'Vehicle not found'}</div>
+        <div className="text-xl text-red-600 dark:text-red-400">{error || 'Vehicle not found'}</div>
       </div>
     );
   }
@@ -50,7 +50,7 @@ const EditVehicle = () => {
           <ChevronLeft size={18} />
           <span>Back to Vehicle</span>
         </Link>
-        <h1 className="text-3xl font-bold text-primary">
+        <h1 className="text-3xl font-bold text-primary dark:text-primary-300">
           Edit {vehicle.make} {vehicle.model}
         </h1>
       </div>
