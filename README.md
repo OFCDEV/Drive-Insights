@@ -51,8 +51,3 @@ A web application that provides interactive dashboards for visualizing vehicle d
 ### Database Setup
 1. Create a PostgreSQL database named `drive_insights`
 2. Run the SQL scripts in the `database` directory to set up the schema
-
-## Color Palette
-- Primary Color: Dark Blue (#1A237E)
-- Secondary Color: Light Gray (#EEEEEE)
-- Accent Color: Teal (#00BCD4) 
